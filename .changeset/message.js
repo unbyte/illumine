@@ -1,11 +1,9 @@
 module.exports = {
   async getVersionMessage(releasePlan, _options) {
-    const pkg = releasePlan.releases.find((release) => release.name === '@illumine/deminify')
+    const releases = releasePlan.releases.filter((release) => release.type !== 'none')
 
-    if (!pkg) {
-      throw new Error(`main package not found in release plan`)
-    }
+    const lines = releases.map((release) => `- ${release.name}@${release.newVersion}`)
 
-    return `chore(release): ${pkg.newVersion}`
+    return `chore: release\n\n${lines.join('\n')}`
   },
 }

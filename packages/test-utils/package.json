@@ -1,6 +1,7 @@
 {
   "private": true,
   "name": "@illumine/test-utils",
+  "version": "0.0.0",
   "type": "module",
   "main": "src/index.ts",
   "dependencies": {
