@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { unminify } from '.'
+import { unminify } from './lib'
 
 describe('unminify', () => {
   it('reverses minifier tricks and formats the result', async () => {
