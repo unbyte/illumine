@@ -1,0 +1,34 @@
+{
+  "name": "@illumine/unminify",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "src/index.ts",
+  "files": [
+    "lib"
+  ],
+  "author": {
+    "name": "unbyte",
+    "url": "https://github.com/unbyte"
+  },
+  "license": "MIT",
+  "keywords": [],
+  "scripts": {
+    "build": "tsup",
+    "prepublishOnly": "pnpm build"
+  },
+  "devDependencies": {
+    "@illumine/test-utils": "workspace:*"
+  },
+  "publishConfig": {
+    "main": "lib/index.cjs",
+    "module": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./lib/index.d.ts",
+        "import": "./lib/index.js",
+        "require": "./lib/index.cjs"
+      }
+    }
+  }
+}

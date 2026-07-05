@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "name": "@illumine/test-utils",
+  "type": "module",
+  "main": "src/index.ts"
+}
