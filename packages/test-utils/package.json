@@ -2,5 +2,10 @@
   "private": true,
   "name": "@illumine/test-utils",
   "type": "module",
-  "main": "src/index.ts"
+  "main": "src/index.ts",
+  "dependencies": {
+    "@babel/generator": "catalog:",
+    "@babel/parser": "catalog:",
+    "@babel/traverse": "catalog:"
+  }
 }

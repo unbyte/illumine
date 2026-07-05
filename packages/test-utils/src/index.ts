@@ -1,1 +1,1 @@
-console.log('Hello, world!')
+export { createTransform } from './babel-transform'

@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "type": "module",
   "main": "src/index.ts",
+  "bin": {
+    "unminify": "./src/bin.ts"
+  },
   "files": [
     "lib"
   ],
@@ -16,17 +19,28 @@
     "build": "tsup",
     "prepublishOnly": "pnpm build"
   },
+  "dependencies": {
+    "@babel/generator": "catalog:",
+    "@babel/parser": "catalog:",
+    "@babel/traverse": "catalog:",
+    "@babel/types": "catalog:",
+    "@commander-js/extra-typings": "^15.0.0",
+    "commander": "^15.0.0",
+    "jsesc": "^3.1.0",
+    "oxfmt": "~0.53.0"
+  },
   "devDependencies": {
     "@illumine/test-utils": "workspace:*"
   },
   "publishConfig": {
     "main": "lib/index.cjs",
-    "module": "lib/index.js",
-    "types": "lib/index.d.ts",
+    "types": "lib/index.d.cts",
+    "bin": {
+      "unminify": "./lib/bin.cjs"
+    },
     "exports": {
       ".": {
-        "types": "./lib/index.d.ts",
-        "import": "./lib/index.js",
+        "types": "./lib/index.d.cts",
         "require": "./lib/index.cjs"
       }
     }
