@@ -50,6 +50,7 @@
     "@illumine/test-utils": "workspace:*"
   },
   "publishConfig": {
+    "access": "public",
     "main": "lib/index.cjs",
     "module": "lib/index.js",
     "types": "lib/index.d.cts",
