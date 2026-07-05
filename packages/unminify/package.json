@@ -1,6 +1,7 @@
 {
   "name": "@illumine/unminify",
   "version": "0.0.1",
+  "description": "Reverse production transforms to make JavaScript readable again",
   "type": "module",
   "main": "src/index.ts",
   "bin": {
@@ -9,12 +10,28 @@
   "files": [
     "lib"
   ],
+  "keywords": [
+    "unminify",
+    "beautify",
+    "readable",
+    "babel",
+    "javascript",
+    "ast"
+  ],
+  "homepage": "https://github.com/unbyte/illumine/tree/main/packages/unminify#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unbyte/illumine.git",
+    "directory": "packages/unminify"
+  },
+  "bugs": {
+    "url": "https://github.com/unbyte/illumine/issues"
+  },
   "author": {
     "name": "unbyte",
     "url": "https://github.com/unbyte"
   },
   "license": "MIT",
-  "keywords": [],
   "scripts": {
     "build": "tsup",
     "prepublishOnly": "pnpm build"
@@ -34,14 +51,21 @@
   },
   "publishConfig": {
     "main": "lib/index.cjs",
+    "module": "lib/index.js",
     "types": "lib/index.d.cts",
     "bin": {
-      "unminify": "./lib/bin.cjs"
+      "unminify": "./lib/bin.js"
     },
     "exports": {
       ".": {
-        "types": "./lib/index.d.cts",
-        "require": "./lib/index.cjs"
+        "import": {
+          "types": "./lib/index.d.ts",
+          "default": "./lib/index.js"
+        },
+        "require": {
+          "types": "./lib/index.d.cts",
+          "default": "./lib/index.cjs"
+        }
       }
     }
   }
