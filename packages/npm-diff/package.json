@@ -1,19 +1,36 @@
 {
   "name": "@illumine/npm-diff",
   "version": "0.0.1",
+  "description": "Diff two versions of an npm package in VS Code, unminified and formatted",
   "type": "module",
+  "bin": {
+    "npmdiff": "./src/index.ts"
+  },
   "files": [
     "lib"
   ],
-  "bin": {
-    "npmdiff": "./src/index.ts"
+  "keywords": [
+    "npm",
+    "diff",
+    "unminify",
+    "version",
+    "compare",
+    "vscode"
+  ],
+  "homepage": "https://github.com/unbyte/illumine/tree/main/packages/npm-diff#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unbyte/illumine.git",
+    "directory": "packages/npm-diff"
+  },
+  "bugs": {
+    "url": "https://github.com/unbyte/illumine/issues"
   },
   "author": {
     "name": "unbyte",
     "url": "https://github.com/unbyte"
   },
   "license": "MIT",
-  "keywords": [],
   "scripts": {
     "build": "tsup",
     "prepublishOnly": "pnpm build"
