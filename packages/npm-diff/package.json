@@ -1,0 +1,37 @@
+{
+  "name": "@illumine/npm-diff",
+  "version": "0.0.1",
+  "type": "module",
+  "files": [
+    "lib"
+  ],
+  "bin": {
+    "npmdiff": "./src/index.ts"
+  },
+  "author": {
+    "name": "unbyte",
+    "url": "https://github.com/unbyte"
+  },
+  "license": "MIT",
+  "keywords": [],
+  "scripts": {
+    "build": "tsup",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "@illumine/unminify": "workspace:*",
+    "@inquirer/prompts": "catalog:",
+    "@commander-js/extra-typings": "catalog:",
+    "commander": "catalog:",
+    "oxfmt": "catalog:",
+    "semver": "catalog:",
+    "tar": "catalog:",
+    "zx": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public",
+    "bin": {
+      "npmdiff": "./lib/index.js"
+    }
+  }
+}

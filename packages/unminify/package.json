@@ -41,10 +41,10 @@
     "@babel/parser": "catalog:",
     "@babel/traverse": "catalog:",
     "@babel/types": "catalog:",
-    "@commander-js/extra-typings": "^15.0.0",
-    "commander": "^15.0.0",
-    "jsesc": "^3.1.0",
-    "oxfmt": "~0.53.0"
+    "@commander-js/extra-typings": "catalog:",
+    "commander": "catalog:",
+    "jsesc": "catalog:",
+    "oxfmt": "catalog:"
   },
   "devDependencies": {
     "@illumine/test-utils": "workspace:*"
