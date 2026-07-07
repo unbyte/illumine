@@ -16,7 +16,7 @@ program
   .argument('<pkgname>', 'npm package name (scoped names supported)')
   .argument('[spec-a]', 'a version or dist-tag')
   .argument('[spec-b]', 'a version or dist-tag')
-  .option('--registry <url>', 'npm registry to query', DEFAULT_REGISTRY)
+  .option('-r, --registry <url>', 'npm registry to query', DEFAULT_REGISTRY)
   .action((pkgname, specA, specB, options) =>
     new NpmDiff(pkgname, options.registry).run(specA, specB),
   )
