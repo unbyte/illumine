@@ -1,4 +1,4 @@
-import { join } from 'node:path'
+import { join, resolve } from 'node:path'
 import semver from 'semver'
 import { extract } from 'tar'
 import { $, chalk, fs, spinner, tmpdir } from 'zx'
@@ -8,14 +8,26 @@ import { pickVersion, sortVersions } from './select'
 import { formatTree, unminifyTree } from './transform'
 import { ensureVscode, launchDiff } from './vscode'
 
+export interface NpmDiffOptions {
+  registry?: string
+  /** Where to place the two versions. Defaults to a temp dir that is removed on exit. */
+  workspace?: string
+}
+
 export class NpmDiff {
   private packument!: Packument
-  private readonly workdir = tmpdir('npmdiff-')
+  private readonly registry: string
+  private readonly workdir: string
+  private readonly clean: boolean
 
   constructor(
     private readonly pkg: string,
-    private readonly registry = DEFAULT_REGISTRY,
-  ) {}
+    options: NpmDiffOptions = {},
+  ) {
+    this.registry = options.registry ?? DEFAULT_REGISTRY
+    this.workdir = options.workspace ? resolve(options.workspace) : tmpdir('npmdiff-')
+    this.clean = options.workspace === undefined
+  }
 
   async run(specA?: string, specB?: string) {
     await ensureVscode()
@@ -23,22 +35,26 @@ export class NpmDiff {
       fetchPackument(this.pkg, this.registry),
     )
 
-    const [left, right] =
+    const [versionA, versionB] =
       specA && specB
         ? sortVersions(this.resolve(specA), this.resolve(specB))
         : await this.pickVersions(specA)
-    if (left === right) {
-      throw new CliError(`Both specs resolve to ${left} — there is nothing to diff.`)
+    if (versionA === versionB) {
+      throw new CliError(`Both specs resolve to ${versionA} — there is nothing to diff.`)
     }
 
     try {
-      await this.prepare(left)
-      await this.prepare(right)
-      console.log(chalk.green(`Opening VS Code to diff ${this.pkg} ${left} ↔ ${right}`))
-      await launchDiff(join(this.workdir, left), join(this.workdir, right))
-      console.log(chalk.dim('VS Code closed — cleaning up temporary files.'))
+      const left = await this.prepare(versionA)
+      const right = await this.prepare(versionB)
+      console.log(chalk.green(`Opening VS Code to diff ${this.pkg} ${versionA} ↔ ${versionB}`))
+      await launchDiff(left, right)
+      console.log(
+        this.clean
+          ? chalk.dim('VS Code closed — cleaning up temporary files.')
+          : chalk.dim(`VS Code closed — files kept in ${this.workdir}`),
+      )
     } finally {
-      await fs.remove(this.workdir)
+      if (this.clean) await fs.remove(this.workdir)
     }
   }
 
@@ -75,6 +91,7 @@ export class NpmDiff {
     await spinner(`Unpacking ${label}`, () => this.unpack(tarball, dir))
     await spinner(`Unminifying ${label}`, () => unminifyTree(dir))
     await spinner(`Formatting ${label}`, () => formatTree(dir))
+    return dir
   }
 
   private async download(version: string, dir: string) {

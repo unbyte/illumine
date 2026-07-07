@@ -17,9 +17,11 @@ program
   .argument('[spec-a]', 'a version or dist-tag')
   .argument('[spec-b]', 'a version or dist-tag')
   .option('-r, --registry <url>', 'npm registry to query', DEFAULT_REGISTRY)
-  .action((pkgname, specA, specB, options) =>
-    new NpmDiff(pkgname, options.registry).run(specA, specB),
+  .option(
+    '-w, --workspace <dir>',
+    'directory to place the two versions; kept instead of auto-cleaned when set',
   )
+  .action((pkgname, specA, specB, options) => new NpmDiff(pkgname, options).run(specA, specB))
 
 program.parseAsync().catch((error: unknown) => {
   if (error instanceof CliError) {
