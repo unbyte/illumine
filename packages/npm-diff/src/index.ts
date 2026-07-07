@@ -21,6 +21,7 @@ program
     '-w, --workspace <dir>',
     'directory to place the two versions; kept instead of auto-cleaned when set',
   )
+  .option('-u, --unminify', 'unminify sources before diffing', false)
   .action((pkgname, specA, specB, options) => new NpmDiff(pkgname, options).run(specA, specB))
 
 program.parseAsync().catch((error: unknown) => {

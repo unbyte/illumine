@@ -25,7 +25,7 @@ export async function formatTree(dir: string) {
     try {
       const { code: formatted } = await format(basename(file), code, {
         tabWidth: 2,
-        printWidth: 120,
+        printWidth: 100,
       })
       await writeFile(file, formatted)
     } catch {

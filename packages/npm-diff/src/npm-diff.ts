@@ -9,9 +9,12 @@ import { formatTree, unminifyTree } from './transform'
 import { ensureVscode, launchDiff } from './vscode'
 
 export interface NpmDiffOptions {
+  /** npm registry to query. Defaults to the public registry. */
   registry?: string
   /** Where to place the two versions. Defaults to a temp dir that is removed on exit. */
   workspace?: string
+  /** Unminify the sources before diffing. Off by default. */
+  unminify?: boolean
 }
 
 export class NpmDiff {
@@ -19,6 +22,7 @@ export class NpmDiff {
   private readonly registry: string
   private readonly workdir: string
   private readonly clean: boolean
+  private readonly unminify: boolean
 
   constructor(
     private readonly pkg: string,
@@ -27,6 +31,7 @@ export class NpmDiff {
     this.registry = options.registry ?? DEFAULT_REGISTRY
     this.workdir = options.workspace ? resolve(options.workspace) : tmpdir('npmdiff-')
     this.clean = options.workspace === undefined
+    this.unminify = options.unminify ?? false
   }
 
   async run(specA?: string, specB?: string) {
@@ -89,7 +94,7 @@ export class NpmDiff {
 
     const tarball = await spinner(`Downloading ${label}`, () => this.download(version, dir))
     await spinner(`Unpacking ${label}`, () => this.unpack(tarball, dir))
-    await spinner(`Unminifying ${label}`, () => unminifyTree(dir))
+    if (this.unminify) await spinner(`Unminifying ${label}`, () => unminifyTree(dir))
     await spinner(`Formatting ${label}`, () => formatTree(dir))
     return dir
   }
