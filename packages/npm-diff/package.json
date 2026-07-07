@@ -1,6 +1,6 @@
 {
   "name": "@illumine/npm-diff",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Diff two versions of an npm package in VS Code, unminified and formatted",
   "type": "module",
   "bin": {
