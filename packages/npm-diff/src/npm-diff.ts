@@ -1,11 +1,11 @@
 import { join, resolve } from 'node:path'
 import semver from 'semver'
-import { extract } from 'tar'
 import { $, chalk, fs, spinner, tmpdir } from 'zx'
 import { CliError } from './error'
 import { DEFAULT_REGISTRY, fetchPackument, type Packument } from './registry'
 import { pickVersion, sortVersions } from './select'
 import { formatTree, unminifyTree } from './transform'
+import { unpack } from './unpack'
 import { ensureVscode, launchDiff } from './vscode'
 
 export interface NpmDiffOptions {
@@ -15,6 +15,8 @@ export interface NpmDiffOptions {
   workspace?: string
   /** Unminify the sources before diffing. Off by default. */
   unminify?: boolean
+  /** Glob patterns to compare; files outside them are excluded from the diff. */
+  pattern?: string[]
 }
 
 export class NpmDiff {
@@ -23,6 +25,7 @@ export class NpmDiff {
   private readonly workdir: string
   private readonly clean: boolean
   private readonly unminify: boolean
+  private readonly patterns: string[]
 
   constructor(
     private readonly pkg: string,
@@ -32,6 +35,7 @@ export class NpmDiff {
     this.workdir = options.workspace ? resolve(options.workspace) : tmpdir('npmdiff-')
     this.clean = options.workspace === undefined
     this.unminify = options.unminify ?? false
+    this.patterns = options.pattern ?? []
   }
 
   async run(specA?: string, specB?: string) {
@@ -93,7 +97,7 @@ export class NpmDiff {
     await fs.mkdirp(dir)
 
     const tarball = await spinner(`Downloading ${label}`, () => this.download(version, dir))
-    await spinner(`Unpacking ${label}`, () => this.unpack(tarball, dir))
+    await spinner(`Unpacking ${label}`, () => unpack(tarball, dir, this.patterns))
     if (this.unminify) await spinner(`Unminifying ${label}`, () => unminifyTree(dir))
     await spinner(`Formatting ${label}`, () => formatTree(dir))
     return dir
@@ -104,11 +108,5 @@ export class NpmDiff {
       await $`npm pack ${this.pkg}@${version} --registry ${this.registry} --pack-destination ${dir} --json`
     const [{ filename }] = JSON.parse(stdout) as Array<{ filename: string }>
     return join(dir, filename)
-  }
-
-  private async unpack(tarball: string, dir: string) {
-    // `strip: 1` drops the leading `package/` directory the tarball wraps everything in.
-    await extract({ file: tarball, cwd: dir, strip: 1 })
-    await fs.remove(tarball)
   }
 }

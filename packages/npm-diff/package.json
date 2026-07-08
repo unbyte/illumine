@@ -41,6 +41,7 @@
     "@commander-js/extra-typings": "catalog:",
     "commander": "catalog:",
     "oxfmt": "catalog:",
+    "picomatch": "catalog:",
     "semver": "catalog:",
     "tar": "catalog:",
     "zx": "catalog:"

@@ -14,11 +14,12 @@ extension, so a `code` CLI on your `PATH` is required.
 
 ## Options
 
-| Option            | Description                          | Default                       |
-| ----------------- | -------------------------------------| ----------------------------- |
-| `-r, --registry`  | npm registry to query.               | `https://registry.npmjs.org`  |
-| `-w, --workspace` | Directory to place the two versions. | a temp dir, removed on exit   |
-| `-u, --unminify`  | Unminify sources before diffing.     | off                           |
+| Option            | Description                                    | Default                       |
+| ----------------- | ---------------------------------------------- | ----------------------------- |
+| `-r, --registry`  | npm registry to query.                         | `https://registry.npmjs.org`  |
+| `-w, --workspace` | Directory to place the two versions.           | a temp dir, removed on exit   |
+| `-u, --unminify`  | Unminify sources before diffing.               | off                           |
+| `-p, --pattern`   | Compare only files matching this glob (repeat for more). | all files            |
 
 ## License
 
