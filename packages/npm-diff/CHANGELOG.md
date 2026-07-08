@@ -1,5 +1,11 @@
 # @illumine/npm-diff
 
+## 0.2.0
+
+### Minor Changes
+
+- 3759fd5: feat: add --pattern for file filtering during diff
+
 ## 0.1.0
 
 ### Minor Changes
